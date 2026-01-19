@@ -7,7 +7,6 @@ try {
   console.error("[SpeedHack] Injection failed:", e);
 }
 
-// Handle communication between inject.js (main world) and extension storage
 window.addEventListener("message", (event) => {
   if (
     event.source !== window ||
@@ -16,7 +15,6 @@ window.addEventListener("message", (event) => {
   )
     return;
     
-  // Check if context is still valid
   if (!chrome.runtime || !chrome.runtime.id) {
       console.warn('[SpeedHack] Extension context invalidated. Please refresh the page.');
       return;
@@ -32,7 +30,6 @@ window.addEventListener("message", (event) => {
   });
 });
 
-// Send settings to main world on load
 if (chrome.runtime && chrome.runtime.id) {
   chrome.storage.local.get("speedhack_settings", (data) => {
     window.postMessage(
@@ -42,7 +39,6 @@ if (chrome.runtime && chrome.runtime.id) {
   });
 }
 
-// Listen for toggle command from background.js
 chrome.runtime.onMessage.addListener((message) => {
     if (message.type === 'SPEEDHACK_TOGGLE_UI') {
         window.postMessage({ type: 'SPEEDHACK_TOGGLE_UI' }, '*');
